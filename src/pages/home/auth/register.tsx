@@ -86,7 +86,7 @@ function Register() {
 
       <div className="flex justify-between items-center my-3">
         <Link
-          to="/login"
+          to="/auth/login"
           className="text-purple-700 hover:underline duration-300"
         >
           Already have an account?

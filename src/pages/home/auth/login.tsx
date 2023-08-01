@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Login() {
   return (
-    <div className="container flex flex-col mx-auto mt-10 justify-start items-center h-80 w-128 p-10 bg-gray-50 font-gemunu">
+    <div className="container flex flex-col mx-auto justify-start items-center h-80 w-128 p-10 bg-gray-50 font-gemunu">
       <h2 className="text-purple-700 text-3xl font-semibold uppercase">
         Welcome to Your Digital Oasis
       </h2>
@@ -41,12 +41,12 @@ function Login() {
         </div>
         <div className="flex justify-between items-center my-3">
           <Link
-            to="/register"
+            to="/auth/register"
             className="text-purple-700 hover:underline duration-300">
             Don't have an account?
           </Link>
           <Link
-            to="/"
+            to="/auth/forgotPassword"
             className="text-purple-700 hover:underline duration-300">
             Forgot password?
           </Link>

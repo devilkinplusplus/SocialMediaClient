@@ -1,40 +1,117 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { Tooltip } from "@mui/material";
 
 function Header() {
-
   const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 py-4 sticky top-0">
       <nav className="container mx-auto flex items-center justify-between">
         <div className="text-white">
-          <span className="text-4xl tracking-wider font-bold cursor-pointer" onClick={() => navigate("/")}>
+          <span
+            className="text-4xl tracking-wider font-bold cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             Connectify
           </span>
         </div>
         <ul className="flex space-x-4 text-xl">
           <li>
-            <NavLink
-              to=''
-              className="text-white hover:text-purple-300 transition duration-300">
-              Home
-            </NavLink>
+            <Tooltip title="Home">
+              <NavLink
+                to=""
+                className="text-white hover:text-purple-300 transition duration-300"
+              >
+                <i className="fa fa-house"></i>
+              </NavLink>
+            </Tooltip>
           </li>
           <li>
-            <NavLink
-              to='/register'
-              className="text-white hover:text-purple-300 transition duration-300">
-              Sign up
-            </NavLink>
+            <Tooltip title="Admin page">
+              <NavLink
+                to="/admin"
+                className="text-white hover:text-purple-300 transition duration-300"
+              >
+                <i className="fas fa-dashboard"></i>
+              </NavLink>
+            </Tooltip>
           </li>
           <li>
-            <NavLink
-              to='./login'
-              className="text-white hover:text-purple-300 transition duration-300">
-              Sign in
-            </NavLink>
+            <Tooltip title="Explore">
+              <NavLink
+                to="/explore"
+                className="text-white hover:text-purple-300 transition duration-300"
+              >
+                <i className="fa fa-bolt"></i>
+              </NavLink>
+            </Tooltip>
+          </li>
+          <li>
+            <Tooltip title="Login">
+              <NavLink
+                to="/auth/login"
+                className="text-white hover:text-purple-300 transition duration-300"
+              >
+                <i className="fas fa-user"></i>
+              </NavLink>
+            </Tooltip>
+          </li>
+          
+          <li>
+            <button
+              id="basic-button"
+              aria-controls={anchorEl ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open}
+              onClick={handleClick}
+              className="text-white"
+            >
+              <i className="fas fa-robot"></i>
+            </button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => navigate("/profile")} disableRipple>
+                <span className="text-gray-500">
+                  <SettingsIcon sx={{ mr: 1 }} />
+                  Profile
+                </span>
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/account")} disableRipple>
+                <span className="text-gray-500">
+                  <AccountCircleIcon sx={{ mr: 1 }} />
+                  My account
+                </span>
+              </MenuItem>
+              <MenuItem
+                onClick={() => localStorage.removeItem("accessToken")}
+                disableRipple
+              >
+                <span className="text-gray-500">
+                  <ExitToAppIcon sx={{ mr: 1 }} />
+                  Logout
+                </span>
+              </MenuItem>
+            </Menu>
           </li>
         </ul>
       </nav>

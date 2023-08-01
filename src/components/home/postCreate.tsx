@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function PostCreate() {
   return (
@@ -15,7 +15,7 @@ function PostCreate() {
           <span className="text-gray-400 text-xs">@johndoe</span>
         </div>
       </div>
-      <form action="#" method="POST">
+      <form method="POST">
         <div className="mb-4">
           <textarea
             id="postContent"
