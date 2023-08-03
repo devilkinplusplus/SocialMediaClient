@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import PrivateRoute from "./components/home/privateRoute";
 import DefaultHome from "./pages/home/layout/defaultHome";
 import PrivateRouteAdmin from "./components/home/privateRouteAdmin";
+import ResetPassword from "./components/home/password/resetPassword";
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="login" index={true} element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgotPassword" element={<ForgotPassword />} />
+        <Route path="changePassword/:userId/:resetToken" element={<ResetPassword />}/>
       </Route>
 
       <Route path="*" element={<NotFound />} />

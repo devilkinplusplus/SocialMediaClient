@@ -11,4 +11,8 @@ export const createUser = (data: CreateUser) => {
   });
 };
 
+export const resetPassword = (userId:string,resetToken:string,newPassword:string)=>{
+  return axiosInstance.post("/resetPassword",{userId,resetToken,newPassword})
+}
+
 export default axios;
