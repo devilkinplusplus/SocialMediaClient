@@ -7,6 +7,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Tooltip } from "@mui/material";
+import { hasAdminAccess,isAuthenticated } from "../../../common/services/utilities/jwtUtils";
 
 function Header() {
   const navigate = useNavigate();
@@ -42,16 +43,18 @@ function Header() {
               </NavLink>
             </Tooltip>
           </li>
-          <li>
-            <Tooltip title="Admin page">
-              <NavLink
-                to="/admin"
-                className="text-white hover:text-purple-300 transition duration-300"
-              >
-                <i className="fas fa-dashboard"></i>
-              </NavLink>
-            </Tooltip>
-          </li>
+          {hasAdminAccess() && (
+            <li>
+              <Tooltip title="Admin page">
+                <NavLink
+                  to="/admin"
+                  className="text-white hover:text-purple-300 transition duration-300"
+                >
+                  <i className="fas fa-dashboard"></i>
+                </NavLink>
+              </Tooltip>
+            </li>
+          )}
           <li>
             <Tooltip title="Explore">
               <NavLink
@@ -72,7 +75,7 @@ function Header() {
               </NavLink>
             </Tooltip>
           </li>
-          
+
           <li>
             <button
               id="basic-button"

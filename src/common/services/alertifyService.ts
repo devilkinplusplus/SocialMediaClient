@@ -16,8 +16,8 @@ export const showWarning = (message: string) => {
 export const confirmAlert = (
   title: string,
   message: string,
-  onConfirm: () => {},
-  onCancel?: () => {}
+  onConfirm: () => void,
+  onCancel?: () => void
 ) => {
   alertify.confirm(
     title,

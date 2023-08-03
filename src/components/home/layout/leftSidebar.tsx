@@ -1,9 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from "../../../common/services/alertifyService";
 
 function LeftSidebar() {
   const navigate = useNavigate();
+
+  const handleLogout = () =>{
+    confirmAlert("Question","Are you sure to logout?",()=>{
+      localStorage.removeItem("accessToken")
+      navigate("/auth/login")
+    },()=>{})    
+  }
+
   return (
     <div className="bg-gray-100 h-full">
       {/* Badges section */}
@@ -60,7 +69,7 @@ function LeftSidebar() {
             <Link to='/account'>Account</Link>
           </div>
 
-          <div onClick={() => localStorage.removeItem("accessToken")} className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300">
+          <div onClick={() => handleLogout()} className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300">
             <div className="bg-purple-300 rounded-full h-10 w-10 flex items-center justify-center">
               <i className="fas fa-right-from-bracket text-purple-600"></i>
             </div>

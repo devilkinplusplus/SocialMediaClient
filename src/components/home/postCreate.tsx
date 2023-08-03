@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 
 function PostCreate() {
+  useEffect(() => {});
   return (
     <div className="w-full bg-white p-8 rounded-lg shadow-lg">
+     
       {/* User info */}
       <div className="flex mb-4">
         <img
