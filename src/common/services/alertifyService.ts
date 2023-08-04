@@ -1,4 +1,5 @@
 import "alertifyjs/build/css/alertify.min.css";
+import 'alertifyjs/build/css/themes/bootstrap.min.css';
 import alertify from "alertifyjs";
 
 export const showSuccess = (message: string) => {
@@ -32,7 +33,7 @@ export const confirmAlert = (
         onCancel();
       }
     }
-  );
+  )
 };
 
 export default alertify;

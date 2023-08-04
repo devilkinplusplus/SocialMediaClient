@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { confirmResetToken } from "../../../common/services/models/authService";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +7,12 @@ import { BaseRespone } from "../../../common/constants/responseParams/baseRespon
 import ToastService from "../../../common/services/tostifyService";
 import { useForm } from "react-hook-form";
 import { resetPassword } from "../../../common/services/models/userService";
+import { Backdrop,CircularProgress } from "@mui/material";
 
 function ResetPassword() {
   const navigate = useNavigate();
   const { userId, resetToken } = useParams();
+  const [open,setOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -31,6 +33,7 @@ function ResetPassword() {
   });
 
   const onSubmit = async (data) => {
+    setOpen(true);
     if (data.password === data.confirmPassword) {
       await resetPassword(userId, resetToken, data.password).then(
         (res: AxiosResponse<BaseRespone>) => {
@@ -39,10 +42,11 @@ function ResetPassword() {
             ToastService.success("Congrats for your new password 🥳");
           }
         }
-      );
-    } else {
-      ToastService.error("Confirm your password");
-    }
+        );
+      } else {
+        ToastService.error("Confirm your password");
+      }
+      setOpen(false)
   };
 
   return (
@@ -57,14 +61,20 @@ function ResetPassword() {
           <input
             type="password"
             placeholder="New Password.."
-            {...register("password")}
+            required
+            {...register("password",{
+              required:"Password is required"
+            })}
             className="py-2 px-3 w-80 md:w-128 outline-none rounded-md focus:bg-gray-100 duration-200 border-2 border-white focus:border-blue-500"
           />
           <span className="pl-1">Confirm Password</span>
           <input
             type="password"
             placeholder="Repeat Password.."
-            {...register("confirmPassword")}
+            required
+            {...register("confirmPassword",{
+              required:"Password is required"
+            })}
             className="py-2 px-3 w-80 md:w-128 outline-none rounded-md focus:bg-gray-100 duration-200 border-2 border-white focus:border-blue-500"
           />
           <button
@@ -74,6 +84,12 @@ function ResetPassword() {
             Confirm
           </button>
         </form>
+        <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+        </Backdrop>
       </div>
     </>
   );

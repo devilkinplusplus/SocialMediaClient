@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { confirmEmail } from "../../../common/services/models/authService";
 import { BaseRespone } from "../../../common/constants/responseParams/baseResponse";
 import { AxiosResponse } from "axios";
 import ToastService from "../../../common/services/tostifyService";
+import { Backdrop,CircularProgress } from "@mui/material";
 
 function ForgotPassword() {
   const navigate = useNavigate();
+  const [open,setOpen] = useState(false)
+
   const {
     register,
     handleSubmit,
@@ -15,11 +18,13 @@ function ForgotPassword() {
   } = useForm();
 
   const onSubmit = async (data) =>{
+    setOpen(true);
     await confirmEmail(data).then((res:AxiosResponse<BaseRespone>)=>{
         if(res.data.succeeded){
           navigate("/auth/login");
           ToastService.info("Check your email, we sent a link for reset password 😊")
         }
+        setOpen(false);
     }).catch(err=>console.log(err))
   }
 
@@ -44,6 +49,12 @@ function ForgotPassword() {
         We will send a link to your email, from which you can change your
         password
       </span>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }

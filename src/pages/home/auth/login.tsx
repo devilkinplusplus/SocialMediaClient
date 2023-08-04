@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,13 @@ import { loginUser } from "../../../common/services/models/authService";
 import { LoginRespone } from "../../../common/constants/responseParams/loginResponse";
 import { AxiosResponse } from "axios";
 import ToastService from "../../../common/services/tostifyService";
+import { Backdrop,CircularProgress } from "@mui/material";
 
 function Login() {
   const navigate = useNavigate();
+  const [open,setOpen] = useState(false);
+
+
   const {
     register,
     handleSubmit,
@@ -16,18 +20,19 @@ function Login() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setOpen(true);
     await loginUser(data)
-      .then((res:AxiosResponse<LoginRespone>) => {
-        if(!res.data.succeeded){
+      .then((res: AxiosResponse<LoginRespone>) => {
+        if (!res.data.succeeded) {
           for (const error of res.data.errors) {
             ToastService.error(error);
           }
-        }
-        else{
-          localStorage.setItem("accessToken",res.data.token.accessToken);
+        } else {
+          localStorage.setItem("accessToken", res.data.token.accessToken);
           navigate("/");
-          ToastService.success("Welcome Back 👋")
+          ToastService.success("Welcome Back 👋");
         }
+        setOpen(false)
       })
       .catch((err) => {});
   };
@@ -97,6 +102,12 @@ function Login() {
           Go in
         </button>
       </form>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }

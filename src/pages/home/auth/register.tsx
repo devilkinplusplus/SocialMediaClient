@@ -1,4 +1,4 @@
-import React from "react";
+import React , { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,12 @@ import { createUser } from "../../../common/services/models/userService";
 import { CreateUserRespone } from "../../../common/constants/responseParams/createUserResponse";
 import { AxiosResponse } from "axios";
 import ToastService from "../../../common/services/tostifyService";
+import { Backdrop,CircularProgress } from "@mui/material";
 
 function Register() {
   const navigate = useNavigate();
+  const [open,setOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -16,6 +19,7 @@ function Register() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setOpen(true)
     await createUser(data)
       .then((res: AxiosResponse<CreateUserRespone>) => {
         if (!res.data.succeeded) {
@@ -26,6 +30,7 @@ function Register() {
           navigate("/auth/login");
           ToastService.info("Next step is login your account");
         }
+        setOpen(false)
       })
       .catch((err) => {});
   };
@@ -183,6 +188,12 @@ function Register() {
           Let's goo!
         </button>
       </form>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }
