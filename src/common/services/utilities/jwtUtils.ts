@@ -12,8 +12,10 @@ export const hasAdminAccess = () => {
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken !== null) {
     const decodedToken = decodeJWT(accessToken);
-    const roles: string[] = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-    return roles.includes("Admin");
+    if(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]){
+      const roles: string[] = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      return roles.includes("Admin");
+    }
   }
   return false;
 }

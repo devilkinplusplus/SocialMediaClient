@@ -2,16 +2,24 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../common/services/models/authService";
+import {
+  facebookLogin,
+  googleLogin,
+  loginUser,
+} from "../../../common/services/models/authService";
 import { LoginRespone } from "../../../common/constants/responseParams/loginResponse";
 import { AxiosResponse } from "axios";
 import ToastService from "../../../common/services/tostifyService";
-import { Backdrop,CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLoginResponse } from "../../../common/constants/responseParams/googleLoginResponse";
+import { FacebookProvider, useLogin, LoginButton } from "react-facebook";
+import { FacebookLoginResponse } from "../../../common/constants/responseParams/facebookLoginResponse";
 
 function Login() {
   const navigate = useNavigate();
-  const [open,setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const { login, status, isLoading, error } = useLogin();
 
   const {
     register,
@@ -32,9 +40,48 @@ function Login() {
           navigate("/");
           ToastService.success("Welcome Back 👋");
         }
-        setOpen(false)
+        setOpen(false);
       })
       .catch((err) => {});
+  };
+
+  const responseMessage = async (response) => {
+    setOpen(true);
+    await googleLogin(response.credential)
+      .then((res: AxiosResponse<GoogleLoginResponse>) => {
+        if (res.data.succeeded) {
+          localStorage.setItem("accessToken", res.data.token.accessToken);
+          navigate("/");
+          ToastService.success("Welcome Back 👋");
+        }
+        setOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setOpen(false);
+      });
+  };
+
+  const handleSuccess = async (response) => {
+    try {
+      setOpen(true);
+      await facebookLogin(response.authResponse.accessToken)
+        .then((res:AxiosResponse<FacebookLoginResponse>) => {
+          if(res.data.succeeded){
+            localStorage.setItem("accessToken", res.data.token.accessToken);
+            navigate("/");
+            ToastService.success("Welcome Back 👋");
+          }
+          setOpen(false);
+        })
+        .catch((err) => {
+          setOpen(false);
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+      setOpen(false);
+    }
   };
 
   return (
@@ -95,15 +142,21 @@ function Login() {
             Forgot password?
           </Link>
         </div>
-        <button
-          className="bg-purple-600 py-2 px-14 w-full rounded-sm text-white hover:bg-purple-500 duration-300"
-          type="submit"
-        >
-          Go in
-        </button>
+        <div className="flex flex-col w-full justify-between items-center my-3 space-y-1">
+          <button
+            className="bg-purple-600 py-2 px-14 w-full rounded-sm text-white hover:bg-purple-500 duration-300"
+            type="submit"
+          >
+            Come in
+          </button>
+          <GoogleLogin onSuccess={responseMessage} width="384px" />
+          <LoginButton scope="email" onSuccess={handleSuccess}>
+            Login via Facebook
+          </LoginButton>
+        </div>
       </form>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
       >
         <CircularProgress color="inherit" />

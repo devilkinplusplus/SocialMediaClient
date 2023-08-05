@@ -1,6 +1,7 @@
 import React from 'react'
 
 function Footer() {
+
   return (
     <footer className="bg-gradient-to-r from-purple-400 via-purple-500 to-purple-400 py-4">
       <div className="container mx-auto">

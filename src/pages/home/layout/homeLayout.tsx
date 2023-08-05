@@ -1,8 +1,9 @@
-import React from "react";
 import Header from "../../../components/home/layout/header";
 import Footer from "../../../components/home/layout/footer";
 import { Outlet } from "react-router-dom";
 import LeftSidebar from "../../../components/home/layout/leftSidebar";
+import React from 'react'
+
 
 function HomeLayout() {
   return (
@@ -13,7 +14,6 @@ function HomeLayout() {
         <div className="flex-none w-1/5">
           <LeftSidebar />
         </div>
-
         {/* Outlet (Middle Content) */}
         <div className="flex-grow pb-5">
           <Outlet />
@@ -24,4 +24,4 @@ function HomeLayout() {
   );
 }
 
-export default HomeLayout;
+export default HomeLayout

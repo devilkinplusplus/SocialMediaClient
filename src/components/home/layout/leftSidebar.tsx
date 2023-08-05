@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "../../../common/services/alertifyService";
@@ -6,17 +6,18 @@ import { confirmAlert } from "../../../common/services/alertifyService";
 function LeftSidebar() {
   const navigate = useNavigate();
 
-  const handleLogout = () =>{
+  const handleLogout = useCallback( () => {
     confirmAlert("Question","Are you sure to logout?",()=>{
       localStorage.removeItem("accessToken")
       navigate("/auth/login")
     },()=>{})    
-  }
+  },[navigate])
+
 
   return (
     <div className="bg-gray-100 h-full">
       {/* Badges section */}
-      <div className="container bg-con-white h-60 w-60 pt-3 space-y-1 rounded-xl">
+      <div className="hidden md:block container bg-con-white h-60 w-60 pt-3 space-y-1 rounded-xl">
         <h3 className="text-gray-300 text-sm pl-5 py-2">Badges</h3>
 
         <div className="flex-col items-start justify-between pl-5">
@@ -51,7 +52,7 @@ function LeftSidebar() {
         </div>
       </div>
       {/* Settings section */}
-      <div className="container bg-con-white h-60 w-60 mt-3 rounded-xl">
+      <div className="hidden md:block container bg-con-white h-60 w-60 pt-3 rounded-xl">
         <h3 className="text-gray-300 text-sm pl-5 pt-2">Settings</h3>
 
         <div className="flex-col items-start justify-between">
@@ -82,4 +83,4 @@ function LeftSidebar() {
   );
 }
 
-export default LeftSidebar;
+export default LeftSidebar

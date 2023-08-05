@@ -19,4 +19,13 @@ export const confirmResetToken = (userId:string,resetToken:string) => {
   })
 }
 
+export const googleLogin = (idToken:string) => {
+  return axiosInstance.post("/googleLogin",{IdToken : idToken} );
+}
+
+export const facebookLogin = (authToken:string) => {
+  return axiosInstance.post("/facebookLogin",{AuthToken:authToken})
+}
+
+
 export default axios;

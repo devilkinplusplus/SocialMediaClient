@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Route, Navigate,useNavigate } from "react-router-dom";
+import React from "react";
+import { Navigate } from "react-router-dom";
 import { isAuthenticated } from "../../common/services/utilities/jwtUtils";
 
 const PrivateRoute: React.FC<any | any> = ({ children }) => {

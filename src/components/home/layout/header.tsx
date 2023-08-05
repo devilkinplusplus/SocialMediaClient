@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback,memo } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Menu from "@mui/material/Menu";
@@ -7,19 +7,30 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Tooltip } from "@mui/material";
-import { hasAdminAccess,isAuthenticated } from "../../../common/services/utilities/jwtUtils";
+import { hasAdminAccess } from "../../../common/services/utilities/jwtUtils";
+import { confirmAlert } from "../../../common/services/alertifyService";
 
 function Header() {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+
+  const handleLogout = useCallback(() => {
+    confirmAlert("Question","Are you sure to logout?",()=>{
+      localStorage.removeItem("accessToken")
+      navigate("/auth/login")
+    },()=>{})    
+    },[navigate]);
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    },[]);
+
+  const handleClose = useCallback( () => {
     setAnchorEl(null);
-  };
+    },[])
 
   return (
     <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 py-4 sticky top-0">
@@ -75,7 +86,6 @@ function Header() {
               </NavLink>
             </Tooltip>
           </li>
-
           <li>
             <button
               id="basic-button"
@@ -105,10 +115,7 @@ function Header() {
                   My account
                 </span>
               </MenuItem>
-              <MenuItem
-                onClick={() => localStorage.removeItem("accessToken")}
-                disableRipple
-              >
+              <MenuItem onClick={() => handleLogout()} disableRipple>
                 <span className="text-gray-500">
                   <ExitToAppIcon sx={{ mr: 1 }} />
                   Logout

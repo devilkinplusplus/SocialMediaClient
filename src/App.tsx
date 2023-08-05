@@ -20,12 +20,12 @@ import DefaultHome from "./pages/home/layout/defaultHome";
 import PrivateRouteAdmin from "./components/home/privateRouteAdmin";
 import ResetPassword from "./components/home/password/resetPassword";
 
+
 function App() {
 
   return (
     <>
     <Routes>
-
       <Route path="/" element={<PrivateRoute><HomeLayout /></PrivateRoute>}>
         <Route index={true} element={<DefaultHome />} />
         <Route path="/ranks" element={<Ranks />} />
