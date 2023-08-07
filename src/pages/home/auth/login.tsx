@@ -13,13 +13,12 @@ import ToastService from "../../../common/services/tostifyService";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleLoginResponse } from "../../../common/constants/responseParams/googleLoginResponse";
-import { FacebookProvider, useLogin, LoginButton } from "react-facebook";
+import { LoginButton , FacebookProvider } from "react-facebook";
 import { FacebookLoginResponse } from "../../../common/constants/responseParams/facebookLoginResponse";
 
 function Login() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const { login, status, isLoading, error } = useLogin();
 
   const {
     register,
@@ -45,7 +44,7 @@ function Login() {
       .catch((err) => {});
   };
 
-  const responseMessage = async (response) => {
+  const googleLoginAsync = async (response) => {
     setOpen(true);
     await googleLogin(response.credential)
       .then((res: AxiosResponse<GoogleLoginResponse>) => {
@@ -62,24 +61,23 @@ function Login() {
       });
   };
 
-  const handleSuccess = async (response) => {
+  const facebookLoginAsync = async (response) => {
     try {
       setOpen(true);
       await facebookLogin(response.authResponse.accessToken)
-        .then((res:AxiosResponse<FacebookLoginResponse>) => {
-          if(res.data.succeeded){
+        .then((res: AxiosResponse<FacebookLoginResponse>) => {
+          if (res.data.succeeded) {
             localStorage.setItem("accessToken", res.data.token.accessToken);
             navigate("/");
             ToastService.success("Welcome Back 👋");
           }
-          setOpen(false);
         })
         .catch((err) => {
-          setOpen(false);
           console.log(err);
         });
     } catch (error) {
       console.log(error);
+    } finally {
       setOpen(false);
     }
   };
@@ -149,10 +147,18 @@ function Login() {
           >
             Come in
           </button>
-          <GoogleLogin onSuccess={responseMessage} width="384px" />
-          <LoginButton scope="email" onSuccess={handleSuccess}>
-            Login via Facebook
-          </LoginButton>
+          <GoogleLogin onSuccess={googleLoginAsync} width="384px" />
+          <button
+            type="button"
+            className="bg-blue-600 py-2 px-14 w-full rounded-sm text-white hover:bg-blue-500 duration-300"
+          >
+            <i className="fa-brands fa-facebook mr-2 text-lg"></i>
+            <FacebookProvider appId="304740048631172">
+              <LoginButton scope="email" onSuccess={facebookLoginAsync}>
+                Login via Facebook
+              </LoginButton>
+            </FacebookProvider>
+          </button>
         </div>
       </form>
       <Backdrop

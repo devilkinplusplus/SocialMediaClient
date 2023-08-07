@@ -5,6 +5,7 @@ import Sidebar from '../../../components/admin/layout/sidebar'
 import { Outlet } from 'react-router-dom'
 
 function AdminLayout() {
+
   return (
     <div className="flex flex-col min-h-screen font-opensans">
       <Header />

@@ -1,6 +1,6 @@
 import React from "react";
-import PostCreate from "../../../components/home/postCreate";
-import PostList from "../../../components/home/postList";
+import PostCreate from "../../../components/home/posts/postCreate";
+import PostList from "../../../components/home/posts/postList";
 import RightSidebar from "../../../components/home/layout/rightSidebar";
 function DefaultHome() {
   return (

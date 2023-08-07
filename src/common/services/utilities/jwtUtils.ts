@@ -24,3 +24,10 @@ export const isAuthenticated = () => {
   const accessToken = localStorage.getItem("accessToken");
   return accessToken !== null;
 };
+
+export const getUserIdFromToken = () : string =>{
+  const accessToken = localStorage.getItem("accessToken");
+  if(!accessToken) return null;
+  const decodedToken = decodeJWT(accessToken);
+  return decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+}
