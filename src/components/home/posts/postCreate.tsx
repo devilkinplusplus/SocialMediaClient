@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { createPost } from "../../../common/services/models/postService";
 import { AxiosResponse } from "axios";
@@ -7,8 +7,8 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
 import { getUser } from "../../../common/services/models/userService";
 import { UserResponse } from "../../../common/constants/responseParams/userResponse";
-import { useRecoilState } from 'recoil'
-import { userState } from '../../../common/services/states/userState'
+import { useRecoilState } from "recoil";
+import { userState } from "../../../common/services/states/userState";
 import { postState } from "../../../common/services/states/postState";
 import { Post } from "../../../common/constants/dtos/post";
 import { User } from "../../../common/constants/dtos/user";
@@ -16,67 +16,84 @@ import { CreatePostResponse } from "../../../common/constants/responseParams/cre
 
 function PostCreate() {
   const [open, setOpen] = useState(false);
-  const [user,setUser] = useRecoilState<User>(userState);
-  const [posts,setPosts] = useRecoilState<Post[]>(postState);
+  const [user, setUser] = useRecoilState<User>(userState);
+  const [posts, setPosts] = useRecoilState<Post[]>(postState);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     unregister,
-    reset
+    reset,
   } = useForm();
-  
+
   const onSubmit = async (data) => {
-    setOpen(true)
+    setOpen(true);
     const formData = new FormData();
     for (const file of data.files) {
-        formData.append("files",file);
+      formData.append("files", file);
     }
-    formData.append("content",data.content);
-    formData.append("userId",user?.id);
+    formData.append("content", data.content);
+    formData.append("userId", user?.id);
 
-    await createPost(formData).then((res:AxiosResponse<CreatePostResponse>)=>{
-      if(res.data.succeeded){
-        reset();
-        setPosts((prevPosts) => [res.data.post, ...prevPosts])
-        ToastService.success("Hooray! Your post has been added to the community")
-      }else{
-        for (const error of res.data.errors) {
-          ToastService.error(error)
+    await createPost(formData)
+      .then((res: AxiosResponse<CreatePostResponse>) => {
+        if (res.data.succeeded) {
+          reset();
+          setPosts((prevPosts) => [res.data.post, ...prevPosts]);
+          ToastService.success(
+            "Hooray! Your post has been added to the community"
+          );
+        } else {
+          for (const error of res.data.errors) {
+            ToastService.error(error);
+          }
         }
-      }
-    }).catch(err=>{
-      console.log(err);
-    }).finally(()=>{
-      setOpen(false);
-    })
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setOpen(false);
+      });
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     const userId = getUserIdFromToken();
-    getUser(userId).then((res:AxiosResponse<UserResponse>)=>{
-      if(res.data.succeeded){
-        setUser(res.data.value)
+    getUser(userId).then((res: AxiosResponse<UserResponse>) => {
+      if (res.data.succeeded) {
+        setUser(res.data.value);
       }
-    })
-  },[])
+    });
+  }, []);
 
   return (
     <div className="w-full bg-white p-8 rounded-lg shadow-lg">
       {/* User info */}
       <div className="flex mb-4">
-        <img
-          src={`https://localhost:7134/${user?.profileImage}`}
-          alt="sa"
-          className="w-10 h-10 rounded-full mr-4 object-cover"
-        />
+        {user?.profileImage ? (
+          <img
+            src={`https://localhost:7134/${user?.profileImage}`}
+            alt="sa"
+            className="w-10 h-10 rounded-full mr-4 object-cover"
+          />
+        ) : (
+          <div className="rounded-full border-2 border-purple-800  w-10 pt-1.5 pl-2.5 mt-1 mr-2">
+            <i className="fas fa-user text-lg  text-purple-800"></i>
+          </div>
+        )}
         <div className="flex flex-col justify-start items-baseline">
-          <span className="text-gray-700 text-xl">{user?.firstName} {user?.lastName}</span>
+          <span className="text-gray-700 text-xl">
+            {user?.firstName} {user?.lastName}
+          </span>
           <span className="text-gray-400 text-xs">@{user?.userName}</span>
         </div>
       </div>
-      <form method="POST" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <form
+        method="POST"
+        onSubmit={handleSubmit(onSubmit)}
+        encType="multipart/form-data"
+      >
         <div className="mb-4">
           <textarea
             id="postContent"
@@ -87,11 +104,12 @@ function PostCreate() {
           ></textarea>
         </div>
         <div className="mb-4 flex items-center">
-          <div className="relative">
+          <div>
             <input
               type="file"
               id="fileInput"
               {...register("files")}
+              multiple
               className="w-0 h-0 opacity-0 absolute"
             />
             <label

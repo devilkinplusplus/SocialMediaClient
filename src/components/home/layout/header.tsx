@@ -33,7 +33,7 @@ function Header() {
     },[])
 
   return (
-    <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 py-4 sticky top-0">
+    <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 py-4 sticky top-0 z-10">
       <nav className="container mx-auto flex items-center justify-between">
         <div className="text-white">
           <span
