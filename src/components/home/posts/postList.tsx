@@ -27,6 +27,7 @@ function PostList() {
           if (res.data.succeeded) {
             setPosts(res.data.values);
             setPostCount(res.data.postCount);
+            console.log(res.data.values);
           }
         })
         .catch((err) => {

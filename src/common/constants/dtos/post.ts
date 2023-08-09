@@ -8,5 +8,6 @@ export class Post {
     files:string[];
     likes:number;
     isLiked:boolean;
-    date:Date;    
+    date:Date;
+    comments:Comment[]    
 }

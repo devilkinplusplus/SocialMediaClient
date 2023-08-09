@@ -1,6 +1,6 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { timeFormat } from "../../../common/services/utilities/timeFormat";
 import { toggleLikePost } from "../../../common/services/models/postService";
 import { useRecoilState } from "recoil";
@@ -9,10 +9,17 @@ import { userState } from "../../../common/services/states/userState";
 import { Post } from "../../../common/constants/dtos/post";
 import { postState } from "../../../common/services/states/postState";
 import Slider from "react-slick";
+import Modal from "@mui/material/Modal";
+import CommentCreate from "../comments/commentCreate";
+import CommentList from "../comments/commentList";
+import { Comment } from "../../../common/constants/dtos/comment";
 
 function PostDetails({ post }) {
   const user = useRecoilState<User>(userState);
   const [posts, setPosts] = useRecoilState<Post[] | any>(postState);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleLike = async (postId: string) => {
     try {
@@ -34,6 +41,7 @@ function PostDetails({ post }) {
       console.log(err);
     }
   };
+
 
   return (
     <div className="flex flex-col flex-wrap w-full space-y-4 bg-gray-50 py-4 rounded-lg shadow-lg  px-4">
@@ -73,7 +81,7 @@ function PostDetails({ post }) {
             autoplay={true}
             autoplaySpeed={2000}
             cssEase={"linear"}
-            pauseOnHover = {true}
+            pauseOnHover={true}
           >
             {post.files.map((file, index) => (
               <img
@@ -103,12 +111,26 @@ function PostDetails({ post }) {
           </span>
         </button>
         <button
+          onClick={() => handleOpen()}
           className="flex items-center space-x-1 focus:outline-none comment"
-          id="com_1"
         >
           <i className="fas fa-comment"></i>
-          <span>0</span>
+          <span>{post.comments?.length}</span>
         </button>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="flex items-center justify-center"
+        >
+          <div className="bg-white p-8 pb-20 rounded-lg w-256">
+            <CommentCreate postId={post.id} setPosts={setPosts} />
+            <div className="max-h-60 overflow-y-auto">
+              <CommentList comments={post.comments} />
+            </div>
+          </div>
+        </Modal>
         <button className="flex items-center space-x-1 focus:outline-none">
           <i className="fas fa-share-nodes"></i>
         </button>
