@@ -18,6 +18,7 @@ function PostCreate() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useRecoilState<User>(userState);
   const [posts, setPosts] = useRecoilState<Post[]>(postState);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const {
     register,
@@ -25,12 +26,41 @@ function PostCreate() {
     formState: { errors },
     unregister,
     reset,
+    setValue,
+    watch,
   } = useForm();
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const jpgPngFiles = files.filter(
+      (file) => file.type === "image/jpeg" || file.type === "image/png"
+    );
+    const mp4Files = files.filter((file) => file.type === "video/mp4");
+
+    if (mp4Files.length > 0 && jpgPngFiles.length > 0) {
+      ToastService.info("You can't select video and image files at the same time",{
+        position:"bottom-center"
+      })
+      return;
+    } else if (mp4Files.length > 0 && jpgPngFiles.length === 0) {
+      if (mp4Files.length > 1) {
+        ToastService.info("You can only select one MP4 file",{
+          position:"bottom-center"
+        })
+        return;
+      }
+      setSelectedFiles([...mp4Files]);
+    } else if (jpgPngFiles.length > 0 && mp4Files.length === 0) {
+      setSelectedFiles([...jpgPngFiles]);
+    } else {
+      return;
+    }
+  };
 
   const onSubmit = async (data) => {
     setOpen(true);
     const formData = new FormData();
-    for (const file of data.files) {
+    for (const file of selectedFiles) {
       formData.append("files", file);
     }
     formData.append("content", data.content);
@@ -109,8 +139,10 @@ function PostCreate() {
               type="file"
               id="fileInput"
               {...register("files")}
+              accept=".png, .jpg, .mp4"
               multiple
               className="w-0 h-0 opacity-0 absolute"
+              onChange={onFileChange}
             />
             <label
               htmlFor="fileInput"

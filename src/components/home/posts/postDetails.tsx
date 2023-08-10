@@ -12,7 +12,6 @@ import Slider from "react-slick";
 import Modal from "@mui/material/Modal";
 import CommentCreate from "../comments/commentCreate";
 import CommentList from "../comments/commentList";
-import { Comment } from "../../../common/constants/dtos/comment";
 
 function PostDetails({ post }) {
   const user = useRecoilState<User>(userState);
@@ -42,7 +41,6 @@ function PostDetails({ post }) {
     }
   };
 
-
   return (
     <div className="flex flex-col flex-wrap w-full space-y-4 bg-gray-50 py-4 rounded-lg shadow-lg  px-4">
       <div className="flex items-center space-x-4">
@@ -71,27 +69,37 @@ function PostDetails({ post }) {
       <p className="text-lg text-gray-800">{post.content}</p>
       {post.files.length > 0 && (
         <div className="relative rounded-lg shadow-lg max-w-lg">
-          <Slider
-            className="overflow-hidden"
-            dots={false}
-            infinite={true}
-            speed={500}
-            slidesToShow={1}
-            slidesToScroll={1}
-            autoplay={true}
-            autoplaySpeed={2000}
-            cssEase={"linear"}
-            pauseOnHover={true}
-          >
-            {post.files.map((file, index) => (
-              <img
-                key={index}
-                src={`https://localhost:7134/${file}`}
-                alt={`Post image ${index}`}
-                className="w-full h-auto"
+          {post.files[0].endsWith(".mp4") ? (
+            <video controls className="w-full h-auto">
+              <source
+                src={`https://localhost:7134/${post.files[0]}`}
+                type="video/mp4"
               />
-            ))}
-          </Slider>
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <Slider
+              className="overflow-hidden"
+              dots={false}
+              infinite={true}
+              speed={500}
+              slidesToShow={1}
+              slidesToScroll={1}
+              autoplay={true}
+              autoplaySpeed={2000}
+              cssEase={"linear"}
+              pauseOnHover={true}
+            >
+              {post.files.map((file, index) => (
+                <img
+                  key={index}
+                  src={`https://localhost:7134/${file}`}
+                  alt={`Post as ${index}`}
+                  className="w-full h-auto"
+                />
+              ))}
+            </Slider>
+          )}
         </div>
       )}
 
