@@ -3,7 +3,7 @@ import { set, useForm } from "react-hook-form";
 import { createPost } from "../../../common/services/models/postService";
 import { AxiosResponse } from "axios";
 import ToastService from "../../../common/services/tostifyService";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Avatar, Backdrop, CircularProgress } from "@mui/material";
 import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
 import { getUser } from "../../../common/services/models/userService";
 import { UserResponse } from "../../../common/constants/responseParams/userResponse";
@@ -13,6 +13,7 @@ import { postState } from "../../../common/services/states/postState";
 import { Post } from "../../../common/constants/dtos/post";
 import { User } from "../../../common/constants/dtos/user";
 import { CreatePostResponse } from "../../../common/constants/responseParams/createPostResponse";
+import { stringAvatar } from '../../../common/services/utilities/stringUtilities';
 
 function PostCreate() {
   const [open, setOpen] = useState(false);
@@ -108,9 +109,7 @@ function PostCreate() {
             className="w-10 h-10 rounded-full mr-4 object-cover"
           />
         ) : (
-          <div className="rounded-full border-2 border-purple-800  w-10 pt-1.5 pl-2.5 mt-1 mr-2">
-            <i className="fas fa-user text-lg  text-purple-800"></i>
-          </div>
+          <Avatar {...stringAvatar(`${user?.firstName} ${user?.lastName}`)} className="mr-4" />
         )}
         <div className="flex flex-col justify-start items-baseline">
           <span className="text-gray-700 text-xl">

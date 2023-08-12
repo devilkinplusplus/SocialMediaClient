@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../../common/services/states/userState";
 import { useForm } from "react-hook-form";
 import { createComment } from "../../../common/services/models/commentService";
 import { AxiosResponse } from "axios";
 import { BaseRespone } from "../../../common/constants/responseParams/baseResponse";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Avatar, Backdrop, CircularProgress } from "@mui/material";
 import ToastService from "../../../common/services/tostifyService";
 import { postState } from "../../../common/services/states/postState";
 import { Post } from "../../../common/constants/dtos/post";
 import { CommentResponse } from "../../../common/constants/responseParams/commentResponse";
+import { stringAvatar } from '../../../common/services/utilities/stringUtilities';
 
 function CommentCreate({ postId , setPosts }) {
   const user = useRecoilState(userState);
@@ -67,9 +68,7 @@ function CommentCreate({ postId , setPosts }) {
             className="w-10 h-10 rounded-full mr-4 object-cover"
           />
         ) : (
-          <div className="rounded-full border-2 border-purple-800 h-10 w-10 pt-1.5 pl-3 mt-1 mr-2">
-            <i className="fas fa-user text-lg  text-purple-800"></i>
-          </div>
+          <Avatar {...stringAvatar(`${user?.[0].firstName} ${user?.[0].lastName}`)} className="mr-4" />
         )}
         <div className="flex flex-col justify-start items-baseline">
           <span className="text-gray-700 text-xl">You</span>

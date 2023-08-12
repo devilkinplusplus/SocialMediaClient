@@ -40,4 +40,14 @@ export const getUser = (userId: string) => {
   return axiosInstance.get(`/user/${userId}`);
 };
 
+export const editUser = (data) => {
+  return axiosInstance.put("",{
+    editUserDto:data
+  })
+}
+
+export const uploadProfilePicture = (data) => {
+  return axiosInstance.post("/upload",data);
+}
+
 export default axios;

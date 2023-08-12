@@ -24,6 +24,9 @@ export const createComment = (createCommentDto:Partial<CreateCommentDto>) => {
   });
 };
 
+export const deleteComment = (id: string) => {
+  return axiosInstance.put(`?id=${id}`);
+};
 
 
 export default axios;

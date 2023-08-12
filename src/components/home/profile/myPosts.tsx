@@ -1,28 +1,31 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { listPosts } from "../../../common/services/models/postService";
-import { useRecoilState } from "recoil";
-import { userState } from "../../../common/services/states/userState";
-import { postState } from "../../../common/services/states/postState";
-import { PostListResponse } from "../../../common/constants/responseParams/postListResponse";
-import { Post } from "../../../common/constants/dtos/post";
-import PostDetails from "./postDetails";
-import ReactPaginate from "react-paginate";
+import { useParams } from "react-router-dom";
+import { User } from "../../../common/constants/dtos/user";
 import { AxiosResponse } from "axios";
+import { Post } from "../../../common/constants/dtos/post";
+import { getMyPosts } from "../../../common/services/models/postService";
+import { PostListResponse } from "../../../common/constants/responseParams/postListResponse";
+import { Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
+import PostDetails from "../posts/postDetails";
+import ReactPaginate from "react-paginate";
 
-function PostList() {
-  const [user, setUser] = useRecoilState(userState);
-  const [posts, setPosts] = useRecoilState<Post[] | any>(postState);
-  const [postCount, setPostCount] = useState<number>(0);
+function MyPosts() {
+  const { userId } = useParams();
+  const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState<number>(0);
   const [size, setSize] = useState<number>(5);
+  const [postCount, setPostCount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
 
+  const handlePageChange = (selectedPage: { selected: number }) => {
+    setPage(selectedPage.selected);
+  };
+
   const fetchPosts = useCallback(() => {
-    if (user) {
+    if (userId) {
       setLoading(true);
-      listPosts(page, size, user.id)
+      getMyPosts(page, size, userId)
         .then((res: AxiosResponse<PostListResponse>) => {
           if (res.data.succeeded) {
             setPosts(res.data.values);
@@ -36,15 +39,11 @@ function PostList() {
           setLoading(false);
         });
     }
-  }, [user, page, size]);
+  }, [userId, page, size]);
 
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
-
-  const handlePageChange = (selectedPage: { selected: number }) => {
-    setPage(selectedPage.selected);
-  };
 
   return (
     <>
@@ -57,7 +56,7 @@ function PostList() {
         </Stack>
       ) : (
         posts.map((post, index) => {
-          return <PostDetails post={post} key={index} setPosts={setPosts} />;
+          return <PostDetails post={post} key={index} setPosts={setPosts}/>;
         })
       )}
       <hr />
@@ -65,7 +64,7 @@ function PostList() {
         breakLabel="..."
         nextLabel="next"
         onPageChange={handlePageChange}
-        containerClassName="flex justify-start space-x-3 border py-2 px-4 text-gray-500"
+        containerClassName="flex justify-start space-x-5 border py-2 px-4 text-gray-500"
         pageCount={Math.ceil(postCount / size)}
         pageRangeDisplayed={3}
         marginPagesDisplayed={1}
@@ -76,4 +75,4 @@ function PostList() {
   );
 }
 
-export default PostList;
+export default MyPosts;

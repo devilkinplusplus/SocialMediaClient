@@ -1,18 +1,23 @@
-import React,{ memo, useCallback } from "react";
+import React, { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "../../../common/services/alertifyService";
+import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
 
 function LeftSidebar() {
   const navigate = useNavigate();
-
-  const handleLogout = useCallback( () => {
-    confirmAlert("Question","Are you sure to logout?",()=>{
-      localStorage.removeItem("accessToken")
-      navigate("/auth/login")
-    },()=>{})    
-  },[navigate])
-
+  const handleLogout = useCallback(() => {
+    confirmAlert(
+      "Question",
+      "Are you sure to logout?",
+      () => {
+        localStorage.removeItem("accessToken");
+        navigate("/auth/login");
+      },
+      () => {}
+    );
+  }, [navigate]);
+  const userId = getUserIdFromToken();
 
   return (
     <div className="bg-gray-100 h-full">
@@ -56,21 +61,30 @@ function LeftSidebar() {
         <h3 className="text-gray-300 text-sm pl-5 pt-2">Settings</h3>
 
         <div className="flex-col items-start justify-between">
-          <div onClick={() => navigate("/settings")} className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300">
+          <div
+            onClick={() => navigate("/settings")}
+            className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300"
+          >
             <div className="bg-purple-300 rounded-full h-10 w-10 flex items-center justify-center">
               <i className="fas fa-cog text-purple-600"></i>
             </div>
-            <Link to='/settings'>Setings</Link>
+            <Link to="/settings">Setings</Link>
           </div>
 
-          <div onClick={() => navigate("/account")} className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300">
+          <div
+            onClick={() => navigate(`/profile/${userId}`)}
+            className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300"
+          >
             <div className="bg-purple-300 rounded-full h-10 w-10 flex items-center justify-center">
               <i className="fas fa-user text-purple-600"></i>
             </div>
-            <Link to='/account'>Account</Link>
+            <Link to="/account">My Profile</Link>
           </div>
 
-          <div onClick={() => handleLogout()} className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300">
+          <div
+            onClick={() => handleLogout()}
+            className="flex items-baseline gap-3 text-purple-400 text-lg pl-5 py-2 rounded-lg hover:bg-gray-200 cursor-pointer duration-300"
+          >
             <div className="bg-purple-300 rounded-full h-10 w-10 flex items-center justify-center">
               <i className="fas fa-right-from-bracket text-purple-600"></i>
             </div>
@@ -78,9 +92,8 @@ function LeftSidebar() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
 
-export default LeftSidebar
+export default LeftSidebar;

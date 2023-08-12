@@ -1,4 +1,4 @@
-import React, { useCallback,memo } from "react";
+import React, { useCallback, memo } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Menu from "@mui/material/Menu";
@@ -9,28 +9,36 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Tooltip } from "@mui/material";
 import { hasAdminAccess } from "../../../common/services/utilities/jwtUtils";
 import { confirmAlert } from "../../../common/services/alertifyService";
+import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
 
 function Header() {
   const navigate = useNavigate();
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const userId = getUserIdFromToken()
 
   const handleLogout = useCallback(() => {
-    confirmAlert("Question","Are you sure to logout?",()=>{
-      localStorage.removeItem("accessToken")
-      navigate("/auth/login")
-    },()=>{})    
-    },[navigate]);
+    confirmAlert(
+      "Question",
+      "Are you sure to logout?",
+      () => {
+        localStorage.removeItem("accessToken");
+        navigate("/auth/login");
+      },
+      () => {}
+    );
+  }, [navigate]);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
-    },[]);
+    },
+    []
+  );
 
-  const handleClose = useCallback( () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-    },[])
+  }, []);
 
   return (
     <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 py-4 sticky top-0 z-10">
@@ -103,13 +111,19 @@ function Header() {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => navigate("/profile")} disableRipple>
+              <MenuItem
+                onClick={() => navigate(`/profile/${userId}`)}
+                disableRipple
+              >
                 <span className="text-gray-500">
                   <SettingsIcon sx={{ mr: 1 }} />
                   Profile
                 </span>
               </MenuItem>
-              <MenuItem onClick={() => navigate("/account")} disableRipple>
+              <MenuItem
+                onClick={() => navigate("/account/")}
+                disableRipple
+              >
                 <span className="text-gray-500">
                   <AccountCircleIcon sx={{ mr: 1 }} />
                   My account

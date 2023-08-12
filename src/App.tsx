@@ -19,6 +19,9 @@ import PrivateRoute from "./components/home/privateRoute";
 import DefaultHome from "./pages/home/layout/defaultHome";
 import PrivateRouteAdmin from "./components/home/privateRouteAdmin";
 import ResetPassword from "./components/home/password/resetPassword";
+import Profile from "./components/home/profile/profile";
+import MyPosts from "./components/home/profile/myPosts";
+import PostEdit from "./components/home/posts/postEdit";
 
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/profile/:userId"  element={<Profile />}/>
+        <Route path="/profile/posts/:userId" element={<MyPosts />} />
+        <Route path="/post/:id" element={<PostEdit />}/>
       </Route>
 
       <Route path="/admin" element={<PrivateRouteAdmin><AdminLayout /></PrivateRouteAdmin>}>

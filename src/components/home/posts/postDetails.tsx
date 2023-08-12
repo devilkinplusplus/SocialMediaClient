@@ -2,7 +2,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import React, { useEffect } from "react";
 import { timeFormat } from "../../../common/services/utilities/timeFormat";
-import { toggleLikePost } from "../../../common/services/models/postService";
+import {
+  deletePost,
+  toggleLikePost,
+} from "../../../common/services/models/postService";
 import { useRecoilState } from "recoil";
 import { User } from "../../../common/constants/dtos/user";
 import { userState } from "../../../common/services/states/userState";
@@ -12,13 +15,33 @@ import Slider from "react-slick";
 import Modal from "@mui/material/Modal";
 import CommentCreate from "../comments/commentCreate";
 import CommentList from "../comments/commentList";
+import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
+import { Avatar, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { AxiosResponse } from "axios";
+import { BaseRespone } from "../../../common/constants/responseParams/baseResponse";
+import ToastService from "../../../common/services/tostifyService";
+import { confirmAlert } from "../../../common/services/alertifyService";
+import { stringAvatar } from '../../../common/services/utilities/stringUtilities';
+import { useNavigate } from "react-router-dom";
 
-function PostDetails({ post }) {
+function PostDetails({ post , setPosts }) {
+  const authenticatedUserId = getUserIdFromToken();
   const user = useRecoilState<User>(userState);
-  const [posts, setPosts] = useRecoilState<Post[] | any>(postState);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
   const handleLike = async (postId: string) => {
     try {
@@ -41,19 +64,40 @@ function PostDetails({ post }) {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    confirmAlert(
+      "Delete Request",
+      "Are you sure to delete this post?",
+      async () => {
+        await deletePost(id)
+          .then((res: AxiosResponse<BaseRespone>) => {
+            if (res.data.succeeded) {
+              ToastService.info("Deleted permanently");
+              setPosts((prevposts) => prevposts.filter((val) => val.id !== id));
+              handleCloseMenu();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      () => {}
+    );
+  };
+
   return (
     <div className="flex flex-col flex-wrap w-full space-y-4 bg-gray-50 py-4 rounded-lg shadow-lg  px-4">
       <div className="flex items-center space-x-4">
         {post.user.profileImage ? (
           <img
-            className="h-10 w-10 rounded-full"
-            alt="Profile picture"
-            src={`https://localhost:7134/${post.user.profileImage}`}
+            className="h-10 w-10 rounded-full object-cover"
+            alt="Profile sa"
+            src={`https://localhost:7134/${
+              post.user.profileImage ?? post.user.profileImage.path
+            }`}
           />
         ) : (
-          <div className="rounded-full border-2 border-purple-800 w-10 h-10 pt-2 pl-3 mt-1 mr-2">
-            <i className="fas fa-user text-lg  text-purple-800"></i>
-          </div>
+          <Avatar {...stringAvatar(`${post.user?.firstName} ${post.user?.lastName}`)}  />
         )}
         <div className="ml-2 space-x-3">
           <span className="text-con-black text-lg">
@@ -142,6 +186,43 @@ function PostDetails({ post }) {
         <button className="flex items-center space-x-1 focus:outline-none">
           <i className="fas fa-share-nodes"></i>
         </button>
+        {authenticatedUserId === post.user.id && (
+          <>
+            <button
+              className="flex items-center space-x-1 focus:outline-none"
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <i className="fas fa-ellipsis-v"></i>
+            </button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={openMenu}
+              onClose={handleCloseMenu}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={() => navigate(`/post/${post.id}`)}>
+                <ListItemIcon>
+                  <EditIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Edit</ListItemText>
+              </MenuItem>
+              
+              <MenuItem onClick={() => handleDelete(post.id)}>
+                <ListItemIcon>
+                  <DeleteIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete</ListItemText>
+              </MenuItem>
+            </Menu>
+          </>
+        )}
       </div>
     </div>
   );
