@@ -50,4 +50,8 @@ export const uploadProfilePicture = (data) => {
   return axiosInstance.post("/upload",data);
 }
 
+export const getSuggestedPeople = (page:number,size:number) => {
+  return axiosInstance.get(`/suggesteds?page=${page}&size=${size}`)
+}
+
 export default axios;

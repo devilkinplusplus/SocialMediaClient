@@ -22,6 +22,8 @@ import ResetPassword from "./components/home/password/resetPassword";
 import Profile from "./components/home/profile/profile";
 import MyPosts from "./components/home/profile/myPosts";
 import PostEdit from "./components/home/posts/postEdit";
+import MyFollowers from "./components/home/profile/myFollowers";
+import MyFollowings from "./components/home/profile/myFollowings";
 
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/profile/:userId"  element={<Profile />}/>
         <Route path="/profile/posts/:userId" element={<MyPosts />} />
+        <Route path="/profile/followers/:userId" element={<MyFollowers />} />
+        <Route path="/profile/followings/:userId" element={<MyFollowings />} />
         <Route path="/post/:id" element={<PostEdit />}/>
       </Route>
 

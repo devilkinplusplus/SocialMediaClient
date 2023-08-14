@@ -1,14 +1,47 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import UserCard from "./userCard";
-
+import { getSuggestedPeople } from "../../../common/services/models/userService";
+import { AxiosResponse } from "axios";
+import { SuggestedReponse } from "../../../common/constants/responseParams/suggestedResponse";
+import { Suggested } from '../../../common/constants/dtos/suggested';
+import ReactPaginate from "react-paginate";
+import { Backdrop, CircularProgress } from '@mui/material';
 function Explore() {
+  const [page, setPage] = useState<number>(0);
+  const [size, setSize] = useState<number>(4);
+  const [count, setCount] = useState<number>(0);
+  const [users, setUsers] = useState<Suggested[]>([]);
+  const [open,setOpen] = useState<boolean>(false);
+  const handlePageChange = (selectedPage: { selected: number }) => {
+    setPage(selectedPage.selected);
+  };
+
+  const fetchData = useCallback(() => {
+    setOpen(true);
+    getSuggestedPeople(page, size)
+      .then((res: AxiosResponse<SuggestedReponse>) => {
+        if (res.data.succeeded) {
+          debugger;
+          setCount(res.data.userCount);
+          setUsers(res.data.values);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      }).finally(()=>{
+        setOpen(false)
+      });
+  }, [page, size]);
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData]);
+
   return (
     <>
       <div className="bg-con-white h-16 py-4 px-6 mb-2">
         <div className="flex space-x-6 justify-between px-10 items-stretch">
-          <p className="text-purple-600 text-3xl font-semibold">
-            Explore
-          </p>
+          <p className="text-purple-600 text-3xl font-semibold">Explore</p>
           {/* Search bar */}
           <div className="relative text-gray-600">
             <input
@@ -30,14 +63,29 @@ function Explore() {
         </div>
       </div>
       <hr />
-      {/* Explore people */}
       <div className="flex flex-wrap justify-evenly items-center mx-4">
-        {/* UserCard */}
-        <UserCard />
-        <UserCard />
-        <UserCard />
-        <UserCard />
+        {users?.map((user, index) => {
+          return <UserCard key={index} user={user} />;
+        })}
       </div>
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next"
+        onPageChange={handlePageChange}
+        containerClassName="flex justify-center space-x-3 border py-2 px-4 text-gray-500"
+        pageCount={Math.ceil(count / size)}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={1}
+        previousLabel="previous"
+        renderOnZeroPageCount={null}
+      />
+       <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }

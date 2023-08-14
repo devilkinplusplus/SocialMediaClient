@@ -27,6 +27,10 @@ function Profile() {
   const handleTabClick = (tabIndex) => {
     if (tabIndex === 1) {
       navigate(`/profile/posts/${userId}`);
+    }else if(tabIndex === 2){
+      navigate(`/profile/followers/${userId}`)
+    }else if(tabIndex === 3){
+      navigate(`/profile/followings/${userId}`)
     }
     setActiveTab(tabIndex);
   };
