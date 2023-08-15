@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getFollowings } from "../../../common/services/models/followService";
 import { AxiosResponse } from "axios";
 import { FollowerResponse } from "../../../common/constants/responseParams/followerResponse";
@@ -17,7 +17,7 @@ function MyFollowings() {
   const [followingCount, setFollowingCount] = useState<number>(0);
   const [followings, setFollowings] = useRecoilState<Following[]>(followingState);
   const [followers, setFollowers] = useRecoilState<Following[]>(followerState);
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const handlePageChange = (selectedPage: { selected: number }) => {
@@ -31,7 +31,6 @@ function MyFollowings() {
         if (res.data.succeeded) {
           setFollowings(res.data.value.followings);
           setFollowingCount(res.data.value.followingCount);
-          console.log(res.data);
         }
       })
       .catch((err) => {
@@ -45,10 +44,18 @@ function MyFollowings() {
   return (
     <div className="flex flex-col justify-start items-start gap-y-2 px-8 py-4 bg-white h-80 m-4">
       <div className="flex justify-start items-baseline space-x-4">
+        <div className="flex justify-start items-center space-x-3">
         <h3 className="text-2xl text-gray-400 tracking-wider">Followings</h3>
         <span className="rounded-full bg-purple-800 text-white text-center px-2">
           {followingCount}
         </span>
+        </div>
+        <div className="flex justify-start items-center space-x-3 cursor-pointer" onClick={() => navigate(`/profile/followers/${userId}`)}>
+          <h3 className="text-2xl text-gray-400 tracking-wider"> / Followers </h3>
+        </div>
+        <div className="flex justify-start items-center space-x-3 cursor-pointer" onClick={() => navigate(`/profile/posts/${userId}`)}>
+          <h3 className="text-2xl text-gray-400 tracking-wider"> / Posts</h3>
+        </div>
       </div>
 
       {followings?.length > 0 ? (
@@ -64,7 +71,7 @@ function MyFollowings() {
         })
       ) : (
         <div className="bg-gray-200 w-full flex justify-center items-center text-gray-400 h-36 text-2xl">
-          You have no followings
+           No followings yet 🫤
         </div>
       )}
       <ReactPaginate

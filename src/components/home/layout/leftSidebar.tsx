@@ -78,7 +78,7 @@ function LeftSidebar() {
             <div className="bg-purple-300 rounded-full h-10 w-10 flex items-center justify-center">
               <i className="fas fa-user text-purple-600"></i>
             </div>
-            <Link to="/account">My Profile</Link>
+            <Link to="/account">Profile</Link>
           </div>
 
           <div

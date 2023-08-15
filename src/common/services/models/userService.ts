@@ -36,22 +36,33 @@ export const resetPassword = (
   });
 };
 
-export const getUser = (userId: string) => {
-  return axiosInstance.get(`/user/${userId}`);
+export const getUser = (userId: string,followerId?:string,followingId?:string) => {
+  return axiosInstance.get(`/user?userId=${userId}&followerId=${followerId}&followingId=${followingId}`);
 };
 
 export const editUser = (data) => {
-  return axiosInstance.put("",{
-    editUserDto:data
-  })
-}
+  return axiosInstance.put("", {
+    editUserDto: data,
+  });
+};
 
 export const uploadProfilePicture = (data) => {
-  return axiosInstance.post("/upload",data);
-}
+  return axiosInstance.post("/upload", data);
+};
 
-export const getSuggestedPeople = (page:number,size:number) => {
-  return axiosInstance.get(`/suggesteds?page=${page}&size=${size}`)
-}
+export const getSuggestedPeople = (page: number, size: number) => {
+  return axiosInstance.get(`/suggesteds?page=${page}&size=${size}`);
+};
+
+export const changePassword = (userId: string, newPassword: string) => {
+  return axiosInstance.post("/changePassword", {
+    userId,
+    newPassword,
+  });
+};
+
+export const changeVisibility = (userId: string) => {
+  return axiosInstance.post("/changeVisibility", userId);
+};
 
 export default axios;

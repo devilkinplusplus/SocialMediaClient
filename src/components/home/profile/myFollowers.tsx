@@ -1,6 +1,6 @@
 import { Avatar, Backdrop, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { stringAvatar } from "../../../common/services/utilities/stringUtilities";
 import { Following } from "../../../common/constants/dtos/following";
 import { getFollowers } from "../../../common/services/models/followService";
@@ -19,6 +19,7 @@ function MyFollowers() {
   const [followers, setFollowers] = useRecoilState<Following[]>(followerState)
   const [followings, setFollowings] = useRecoilState<Following[]>(followingState);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setOpen(true)
@@ -43,12 +44,19 @@ function MyFollowers() {
   return (
     <div className="flex flex-col justify-start items-start gap-y-2 px-8 py-4 bg-white h-80 m-4">
       <div className="flex justify-start items-baseline space-x-4">
-        <h3 className="text-2xl text-gray-400 tracking-wider">Followers</h3>
-        <span className="rounded-full bg-purple-800 text-white text-center px-2">
-          {followerCount}
-        </span>
+        <div className="flex justify-start items-center space-x-3">
+          <h3 className="text-2xl text-gray-400 tracking-wider">Followers</h3>
+          <span className="rounded-full bg-purple-800 text-white text-center px-2">
+            {followerCount}
+          </span>
+        </div>
+        <div className="flex justify-start items-center space-x-3 cursor-pointer" onClick={() => navigate(`/profile/posts/${userId}`)}>
+          <h3 className="text-2xl text-gray-400 tracking-wider"> / Posts </h3>
+        </div>
+        <div className="flex justify-start items-center space-x-3 cursor-pointer" onClick={() => navigate(`/profile/followings/${userId}`)}>
+          <h3 className="text-2xl text-gray-400 tracking-wider"> / Followings</h3>
+        </div>
       </div>
-      {/* Seperate it component */}
 
       {followers?.length > 0 ? (
         followers.map((follower, index) => {
@@ -56,7 +64,7 @@ function MyFollowers() {
         })
       ) : (
         <div className="bg-gray-200 w-full flex justify-center items-center text-gray-400 h-36 text-2xl">
-          You have no followers
+           No followers yet 🫤
         </div>
       )}
       <ReactPaginate

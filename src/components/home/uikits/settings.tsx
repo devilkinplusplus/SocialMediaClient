@@ -1,6 +1,28 @@
 import React from "react";
+import { confirmAlert } from "../../../common/services/alertifyService";
+import { useNavigate } from "react-router-dom";
+import { Modal } from "@mui/material";
+import ChangePassword from "./changePassword";
 
 function Settings() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    confirmAlert(
+      "Question",
+      "Are you sure to logout?",
+      () => {
+        localStorage.removeItem("accessToken");
+        navigate("/auth/login");
+      },
+      () => {}
+    );
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <>
       <div className="flex justify-center items-center my-4 mx-4">
@@ -14,19 +36,40 @@ function Settings() {
           <p className="text-gray-300 text-sm font-medium">General</p>
           <div className="flex flex-col gap-y-2">
             {/* Account */}
-            <div className="flex gap-x-4 justify-start items-baseline cursor-pointer hover:bg-gray-200 pl-4 pr-40 pt-2 pb-1 rounded-lg">
+            <div
+              onClick={() => navigate("/account")}
+              className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg"
+            >
               <div className="flex items-center justify-center h-12 w-12 rounded-full bg-blue-700">
                 <i className="fas fa-house text-2xl text-white"></i>
               </div>
-              <p className="text-con-black font-medium text-xl">Account</p>
+              <p className="text-con-black font-medium text-xl">
+                Account Settings
+              </p>
             </div>
             {/* Change password */}
-            <div className="flex gap-x-4 justify-start items-baseline cursor-pointer hover:bg-gray-200 pl-4 pr-40 pt-2 pb-1 rounded-lg">
+            <div
+              onClick={handleOpen}
+              className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg"
+            >
               <div className="flex items-center justify-center h-12 w-12 rounded-full bg-orange-600">
                 <i className="fas fa-key text-2xl text-white"></i>
               </div>
-              <p className="text-con-black font-medium text-xl">Change</p>
+              <p className="text-con-black font-medium text-xl">
+                Change Password
+              </p>
             </div>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              className="flex items-center justify-center"
+            >
+              <div className="bg-white p-8 pb-20 rounded-lg w-256">
+                <ChangePassword close={handleClose} />
+              </div>
+            </Modal>
           </div>
         </div>
 
@@ -34,7 +77,7 @@ function Settings() {
           <p className="text-gray-300 text-sm font-medium">Other</p>
           <div className="flex flex-col gap-y-2">
             {/* Notifications */}
-            <div className="flex gap-x-4 justify-start items-baseline cursor-pointer hover:bg-gray-200 pl-4 pr-60 pt-2 pb-1 rounded-lg">
+            <div className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg">
               <div className="flex items-center justify-center h-12 w-12 rounded-full bg-green-700">
                 <i className="fas fa-bell text-2xl text-white"></i>
               </div>
@@ -43,14 +86,17 @@ function Settings() {
               </p>
             </div>
             {/* Help */}
-            <div className="flex gap-x-4 justify-start items-baseline cursor-pointer hover:bg-gray-200 pl-4 pr-40 pt-2 pb-1 rounded-lg">
+            <div className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg">
               <div className="flex items-center justify-center h-12 w-12 rounded-full bg-blue-400">
                 <i className="fas fa-question text-2xl text-white"></i>
               </div>
               <p className="text-con-black font-medium text-xl">Help</p>
             </div>
             {/* Signout */}
-            <div className="flex gap-x-4 justify-start items-baseline cursor-pointer hover:bg-gray-200 pl-4 pr-40 pt-2 pb-1 rounded-lg">
+            <div
+              onClick={() => handleLogout()}
+              className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg"
+            >
               <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-600">
                 <i className="fas fa-right-from-bracket text-2xl text-white"></i>
               </div>

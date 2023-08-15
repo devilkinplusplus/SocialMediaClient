@@ -6,7 +6,7 @@ function MyRanks() {
   return (
     <div className="flex flex-col justify-between items-center">
       <Alert severity="info" className="w-full" variant="outlined">
-        You have no ranks yet - 
+         No ranks yet - 
         <strong>
           <Link to="/ranks"> Check out how to get ranks</Link>
         </strong>

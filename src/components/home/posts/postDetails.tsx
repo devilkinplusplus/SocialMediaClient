@@ -9,8 +9,6 @@ import {
 import { useRecoilState } from "recoil";
 import { User } from "../../../common/constants/dtos/user";
 import { userState } from "../../../common/services/states/userState";
-import { Post } from "../../../common/constants/dtos/post";
-import { postState } from "../../../common/services/states/postState";
 import Slider from "react-slick";
 import Modal from "@mui/material/Modal";
 import CommentCreate from "../comments/commentCreate";

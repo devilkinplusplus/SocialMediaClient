@@ -8,4 +8,5 @@ export class User {
     isPrivate:boolean;
     date:Date;
     profileImage:string;
+    doIFollow:boolean;
 }

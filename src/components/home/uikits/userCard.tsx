@@ -8,13 +8,14 @@ import { FollowResponse } from "../../../common/constants/responseParams/followR
 import { useRecoilState } from "recoil";
 import { Following } from "../../../common/constants/dtos/following";
 import { followingState } from "../../../common/services/states/userState";
+import { useNavigate } from "react-router-dom";
 
 const UserCard = ({ user }) => {
   const userId = getUserIdFromToken();
-  const [followings, setFollowings] =
-    useRecoilState<Following[]>(followingState);
+  const [followings, setFollowings] = useRecoilState<Following[]>(followingState);
   const [requested, setRequested] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleFollow = async () => {
     await followUser(userId, user.id).then(
@@ -47,7 +48,7 @@ const UserCard = ({ user }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden w-56 h-96 my-2 flex flex-col">
       {/* Profile Image */}
-      <div className="flex justify-center items-center m-4">
+      <div className="flex justify-center items-center m-4 cursor-pointer" onClick={() => navigate(`/profile/${user.id}`)}>
         {user?.profileImage ? (
           <img
             className="h-24 w-24 object-cover rounded-full"
@@ -95,7 +96,7 @@ const UserCard = ({ user }) => {
 
         <div className="flex justify-center items-center">
           <button
-            className="bg-indigo-600 py-2 px-20 mx-1 text-base rounded-lg text-white font-medium hover:bg-indigo-500 duration-300"
+            className="bg-indigo-600 py-2 px-16 mx-1 text-base rounded-lg text-white font-medium hover:bg-indigo-500 duration-300"
             type="button"
             onClick={() => handleFollow()}
           >

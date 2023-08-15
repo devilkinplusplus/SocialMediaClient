@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Tooltip } from "@mui/material";
+import { Badge, Tooltip } from "@mui/material";
 import { hasAdminAccess } from "../../../common/services/utilities/jwtUtils";
 import { confirmAlert } from "../../../common/services/alertifyService";
 import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
@@ -15,7 +15,7 @@ function Header() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const userId = getUserIdFromToken()
+  const userId = getUserIdFromToken();
 
   const handleLogout = useCallback(() => {
     confirmAlert(
@@ -60,6 +60,18 @@ function Header() {
               >
                 <i className="fa fa-house"></i>
               </NavLink>
+            </Tooltip>
+          </li>
+          <li>
+            <Tooltip title="Notifications">
+              <Badge badgeContent={4} color="error">
+                <button
+                  type="button"
+                  className="text-white hover:text-purple-300 transition duration-300"
+                >
+                  <i className="fa fa-bell"></i>
+                </button>
+              </Badge>
             </Tooltip>
           </li>
           {hasAdminAccess() && (
@@ -120,10 +132,7 @@ function Header() {
                   Profile
                 </span>
               </MenuItem>
-              <MenuItem
-                onClick={() => navigate("/account/")}
-                disableRipple
-              >
+              <MenuItem onClick={() => navigate("/account/")} disableRipple>
                 <span className="text-gray-500">
                   <AccountCircleIcon sx={{ mr: 1 }} />
                   My account

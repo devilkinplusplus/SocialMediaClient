@@ -49,11 +49,11 @@ function PostList() {
   return (
     <>
       {loading ? (
-        <Stack spacing={1} width={"544px"}>
-          <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
-          <Skeleton variant="circular" width={40} height={40} />
-          <Skeleton variant="rectangular" width={210} height={60} />
-          <Skeleton variant="rounded" width={210} height={60} />
+        <Stack spacing={1} width={"544px"} >
+          <Skeleton variant="text" animation="wave" sx={{ fontSize: "1rem" }} />
+          <Skeleton variant="circular" animation="wave" width={40} height={40} />
+          <Skeleton variant="rectangular" animation="wave" width={210} height={40} />
+          <Skeleton variant="rounded" animation="wave" width={210} height={40} />
         </Stack>
       ) : (
         posts.map((post, index) => {
