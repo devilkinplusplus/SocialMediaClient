@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import UserCard from "./userCard";
 import { getSuggestedPeople } from "../../../common/services/models/userService";
 import { AxiosResponse } from "axios";
@@ -90,4 +90,4 @@ function Explore() {
   );
 }
 
-export default Explore;
+export default memo(Explore);

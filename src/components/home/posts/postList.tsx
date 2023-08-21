@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, memo } from "react";
 import { listPosts } from "../../../common/services/models/postService";
 import { useRecoilState } from "recoil";
 import { userState } from "../../../common/services/states/userState";
@@ -49,12 +49,14 @@ function PostList() {
   return (
     <>
       {loading ? (
-        <Stack spacing={1} width={"544px"} >
-          <Skeleton variant="text" animation="wave" sx={{ fontSize: "1rem" }} />
-          <Skeleton variant="circular" animation="wave" width={40} height={40} />
-          <Skeleton variant="rectangular" animation="wave" width={210} height={40} />
-          <Skeleton variant="rounded" animation="wave" width={210} height={40} />
-        </Stack>
+        Array.from({ length: 4 }, (_, index) => (
+          <Stack key={index} spacing={1} width={"544px"} >
+            <Skeleton variant="text" animation="wave" sx={{ fontSize: "1rem" }} />
+            <Skeleton variant="circular" animation="wave" width={50} height={40} />
+            <Skeleton variant="rectangular" animation="wave" width={210} height={40} />
+            <Skeleton variant="rounded" animation="wave" width={210} height={40} />
+          </Stack>
+        ))        
       ) : (
         posts.map((post, index) => {
           return <PostDetails post={post} key={index} setPosts={setPosts} />;
@@ -76,4 +78,4 @@ function PostList() {
   );
 }
 
-export default PostList;
+export default memo(PostList);

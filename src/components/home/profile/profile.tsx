@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, memo, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUserIdFromToken } from "../../../common/services/utilities/jwtUtils";
 import { User } from "../../../common/constants/dtos/user";
@@ -11,7 +11,7 @@ import { BaseRespone } from "../../../common/constants/responseParams/baseRespon
 import ToastService from "../../../common/services/tostifyService";
 import Modal from "@mui/material/Modal";
 import MyRanks from "./myRanks";
-import { Avatar } from "@mui/material";
+import { Avatar, Backdrop, CircularProgress } from "@mui/material";
 import { stringAvatar } from "../../../common/services/utilities/stringUtilities";
 import { UserResponse } from "../../../common/constants/responseParams/userResponse";
 import { followUser } from "../../../common/services/models/followService";
@@ -34,7 +34,8 @@ function Profile() {
     useRecoilState<Following[]>(followingState);
   const [requested, setRequested] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
-  const authId = getUserIdFromToken()
+  const [openLoad, setOpenLoad] = useState(false);
+  const authId = getUserIdFromToken();
 
   const handleTabClick = (tabIndex) => {
     if (tabIndex === 1) {
@@ -53,6 +54,7 @@ function Profile() {
   };
 
   const saveFile = async () => {
+    setOpenLoad(true);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("userId", user?.id);
@@ -63,10 +65,13 @@ function Profile() {
           handleClose();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err)).finally(()=>{
+        setOpenLoad(false);
+      });
   };
 
   const handleFollow = async () => {
+    setOpenLoad(true);
     await followUser(userId, user.id).then(
       (res: AxiosResponse<FollowResponse>) => {
         if (res.data.succeeded) {
@@ -89,11 +94,14 @@ function Profile() {
           }
         }
       }
-    );
+    ).finally(()=>{
+      setOpenLoad(false)
+    });
   };
 
   useEffect(() => {
-    getUser(userId,authId,userId)
+    setOpenLoad(true);
+    getUser(userId, authId, userId)
       .then((res: AxiosResponse<UserResponse>) => {
         if (res.data.succeeded) {
           setUser(res.data.value);
@@ -101,6 +109,8 @@ function Profile() {
       })
       .catch((err) => {
         console.log(err);
+      }).finally(()=>{
+        setOpenLoad(false)
       });
   }, [userId]);
 
@@ -186,7 +196,9 @@ function Profile() {
                 type="button"
                 className="bg-blue-500 text-white hover:bg-blue-400 duration-300 px-6 py-1.5 rounded"
               >
-                {isFollowing === true || user?.doIFollow === true ? "Unfollow" : "Follow"}
+                {isFollowing === true || user?.doIFollow === true
+                  ? "Unfollow"
+                  : "Follow"}
               </button>
             )}
           </div>
@@ -240,11 +252,17 @@ function Profile() {
       </div>
       {activeTab === 0 && (
         <div className="flex px-10 py-3 bg-gray-100 text-lg justify-start space-3 text-gray-500 h-auto">
-          <MyRanks />
+          <MyRanks userId={userId} />
         </div>
       )}
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoad}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }
 
-export default Profile;
+export default memo(Profile);

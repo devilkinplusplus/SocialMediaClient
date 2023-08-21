@@ -5,4 +5,5 @@ export class Following {
     userName:string;
     profileImage:string;
     followerId:string;
+    doIFollow:boolean;
 }

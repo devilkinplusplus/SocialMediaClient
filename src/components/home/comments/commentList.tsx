@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo } from "react";
 import CommentDetails from "./commentDetails";
 
 function CommentList({ comments }) {
@@ -11,4 +11,4 @@ function CommentList({ comments }) {
   );
 }
 
-export default CommentList;
+export default memo(CommentList);

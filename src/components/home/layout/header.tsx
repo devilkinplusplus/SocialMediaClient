@@ -62,18 +62,6 @@ function Header() {
               </NavLink>
             </Tooltip>
           </li>
-          <li>
-            <Tooltip title="Notifications">
-              <Badge badgeContent={4} color="error">
-                <button
-                  type="button"
-                  className="text-white hover:text-purple-300 transition duration-300"
-                >
-                  <i className="fa fa-bell"></i>
-                </button>
-              </Badge>
-            </Tooltip>
-          </li>
           {hasAdminAccess() && (
             <li>
               <Tooltip title="Admin page">

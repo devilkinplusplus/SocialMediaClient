@@ -1,4 +1,6 @@
+import { Avatar } from "@mui/material";
 import React from "react";
+import { stringAvatar } from '../../../common/services/utilities/stringUtilities';
 
 function Requests() {
   return (
@@ -7,11 +9,7 @@ function Requests() {
 
       <div className="flex-col items-start justify-between">
         <div className="flex items-center gap-2 text-gray-400 text-lg py-2 my-2 pl-4  hover:bg-gray-200 rounded-lg duration-300">
-          <img
-            className="h-10 w-10 rounded-full"
-            src="https://randomuser.me/api/portraits/men/1.jpg"
-            alt="Profile picture"
-          />
+           <Avatar {...stringAvatar(`John Doe`)}  />
           <div className="flex gap-x-3 items-center">
             <a href="#" className="font-medium">
               John Doe
@@ -29,11 +27,7 @@ function Requests() {
       </div>
       <div className="flex-col items-start justify-between">
         <div className="flex items-center gap-2 text-gray-400 text-lg py-2 my-2 pl-4  hover:bg-gray-200 rounded-lg duration-300">
-          <img
-            className="h-10 w-10 rounded-full"
-            src="https://randomuser.me/api/portraits/men/1.jpg"
-            alt="Profile picture"
-          />
+           <Avatar {...stringAvatar(`John Doe`)}  />
           <div className="flex gap-x-3 items-center">
             <a href="#" className="font-medium">
               John Doe
@@ -51,11 +45,7 @@ function Requests() {
       </div>
       <div className="flex-col items-start justify-between">
         <div className="flex items-center gap-2 text-gray-400 text-lg py-2 my-2 pl-4  hover:bg-gray-200 rounded-lg duration-300">
-          <img
-            className="h-10 w-10 rounded-full"
-            src="https://randomuser.me/api/portraits/men/1.jpg"
-            alt="Profile picture"
-          />
+           <Avatar {...stringAvatar(`John Doe`)}  />
           <div className="flex gap-x-3 items-center">
             <a href="#" className="font-medium">
               John Doe

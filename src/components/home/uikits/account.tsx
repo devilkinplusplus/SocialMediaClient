@@ -58,7 +58,7 @@ function Account() {
             src={`https://localhost:7134/${user?.profileImage}`}
           />
         ) : (
-          <Avatar {...stringAvatar(`${user?.firstName} ${user?.lastName}`)} />
+          <Avatar {...stringAvatar(`${user?.firstName} ${user?.lastName}`)} sx={{ width: 76, height: 74 }} className="mt-4"/>
         )}
         <p className="text-2xl text-gray-700 font-medium tracking-wider">
           {user?.firstName} {user?.lastName}

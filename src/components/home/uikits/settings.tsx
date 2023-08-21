@@ -86,7 +86,7 @@ function Settings() {
               </p>
             </div>
             {/* Help */}
-            <div className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg">
+            <div onClick={() => navigate("/help")} className="flex gap-x-4 justify-start items-center cursor-pointer hover:bg-gray-200 pl-4 w-128 py-2 rounded-lg">
               <div className="flex items-center justify-center h-12 w-12 rounded-full bg-blue-400">
                 <i className="fas fa-question text-2xl text-white"></i>
               </div>

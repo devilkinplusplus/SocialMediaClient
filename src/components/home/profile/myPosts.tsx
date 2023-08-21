@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState,memo } from "react";
 import { useParams } from "react-router-dom";
-import { User } from "../../../common/constants/dtos/user";
 import { AxiosResponse } from "axios";
 import { Post } from "../../../common/constants/dtos/post";
 import { getMyPosts } from "../../../common/services/models/postService";
 import { PostListResponse } from "../../../common/constants/responseParams/postListResponse";
-import { Alert, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import PostDetails from "../posts/postDetails";
 import ReactPaginate from "react-paginate";
@@ -107,4 +106,4 @@ function MyPosts() {
   );
 }
 
-export default MyPosts;
+export default memo(MyPosts);

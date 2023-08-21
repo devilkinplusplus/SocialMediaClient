@@ -24,6 +24,8 @@ import MyPosts from "./components/home/profile/myPosts";
 import PostEdit from "./components/home/posts/postEdit";
 import MyFollowers from "./components/home/profile/myFollowers";
 import MyFollowings from "./components/home/profile/myFollowings";
+import Help from "./components/home/uikits/help";
+import Users from "./components/admin/users/users";
 
 
 function App() {
@@ -38,6 +40,7 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/help" element={<Help />} />
         <Route path="/profile/:userId"  element={<Profile />}/>
         <Route path="/profile/posts/:userId" element={<MyPosts />} />
         <Route path="/profile/followers/:userId" element={<MyFollowers />} />
@@ -45,7 +48,8 @@ function App() {
         <Route path="/post/:id" element={<PostEdit />}/>
       </Route>
 
-      <Route path="/admin" element={<PrivateRouteAdmin><AdminLayout /></PrivateRouteAdmin>}>
+      <Route path="/admin/" element={<PrivateRouteAdmin><AdminLayout /></PrivateRouteAdmin>}>
+        <Route path="users" element={<Users />} />
       </Route>
 
       <Route path="/auth" element={<AuthLayout />}>

@@ -14,7 +14,7 @@ function Sidebar() {
           </li>
           <li>
             <NavLink
-              to="/users"
+              to="users"
               className="block py-2 px-6 rounded-md hover:bg-gray-200 transition-colors"
               >
               Users
@@ -22,13 +22,13 @@ function Sidebar() {
           </li>
           <li>
             <NavLink
-              to="/messages"
+              to="/"
               className="block py-2 px-6 rounded-md hover:bg-gray-200 transition-colors"
               >
-              Messages
+              Back Home
             </NavLink>
           </li>
-        </ul>
+      </ul>
     </div>
   )
 }

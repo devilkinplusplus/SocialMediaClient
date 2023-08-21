@@ -85,7 +85,7 @@ function PostDetails({ post , setPosts }) {
 
   return (
     <div className="flex flex-col flex-wrap w-full space-y-4 bg-gray-50 py-4 rounded-lg shadow-lg  px-4">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate(`/profile/${post.user?.id}`)}>
         {post.user.profileImage ? (
           <img
             className="h-10 w-10 rounded-full object-cover"

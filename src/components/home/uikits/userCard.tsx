@@ -33,8 +33,9 @@ const UserCard = ({ user }) => {
           } else if (res.data.followState.isFollowing === true) {
             setFollowings((prevFollowings) => [
               res.data.followState.following,
-              ...prevFollowings,
+              ...(prevFollowings ?? []), 
             ]);
+            
             user.followerCount += 1;
             setIsFollowing(true);
           } else if (res.data.followState.hasRequest === true) {

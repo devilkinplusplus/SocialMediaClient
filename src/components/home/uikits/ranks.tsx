@@ -19,7 +19,6 @@ function Ranks() {
               <i className="fas fa-rocket text-5xl text-white"></i>
             </div>
           </div>
-
           <div className="px-8 py-4">
             <div className="flex flex-col justify-center items-center font-medium text-gray-800">
               <p className="text-2xl">Rocket</p>

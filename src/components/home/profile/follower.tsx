@@ -65,7 +65,7 @@ function Follower({ follower, setFollowers, setFollowings }) {
         </div>
       </div>
 
-      {authId === follower.followerId ? (
+      {follower.doIFollow ? (
         <button
           className="w-24 py-1 bg-purple-500 hover:bg-purple-400 duration-300 text-white rounded ml-auto mr-2"
           type="button"
@@ -83,7 +83,7 @@ function Follower({ follower, setFollowers, setFollowings }) {
         >
           Requested
         </button>
-      ) : authId === follower.id ?(
+      ) : authId === follower.id ? (
         <p></p>
       ) : (
         <button

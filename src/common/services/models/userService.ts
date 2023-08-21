@@ -36,6 +36,10 @@ export const resetPassword = (
   });
 };
 
+export const getAllUsers = (page:number,size:number) => {
+  return axiosInstance.get(`?page=${page}&size=${size}`)
+}
+
 export const getUser = (userId: string,followerId?:string,followingId?:string) => {
   return axiosInstance.get(`/user?userId=${userId}&followerId=${followerId}&followingId=${followingId}`);
 };
@@ -64,5 +68,16 @@ export const changePassword = (userId: string, newPassword: string) => {
 export const changeVisibility = (userId: string) => {
   return axiosInstance.post("/changeVisibility", userId);
 };
+
+export const achieveRank = (userId:string) => {
+  return axiosInstance.post(`/rank`,{
+    userId
+  })
+}
+
+export const getUserRanks = (userId:string) => {
+  return axiosInstance.get(`/ranks?userId=${userId}`)
+}
+
 
 export default axios;
