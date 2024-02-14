@@ -51,7 +51,7 @@ function Follower({ follower, setFollowers, setFollowings }) {
             />
           ) : (
             <Avatar
-              {...stringAvatar(`${follower?.firstName} ${follower?.lastname}`)}
+              {...stringAvatar(`${follower?.firstName} ${follower?.lastName}`)}
               className="ml-4"
             />
           )}

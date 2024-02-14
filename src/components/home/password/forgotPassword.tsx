@@ -35,6 +35,8 @@ function ForgotPassword() {
         <input
           type="email"
           placeholder="Email address.."
+          required
+          autoComplete="off"
           {...register("email")}
           className="py-2 px-3 w-80 md:w-128 outline-none rounded-l-md focus:bg-gray-100 duration-200 border-2 border-white focus:border-blue-500"
         />
@@ -45,7 +47,7 @@ function ForgotPassword() {
           Send
         </button>
       </form>
-      <span className="pt-4 text-gray-400">
+      <span className="pt-4 text-gray-400 text-center">
         We will send a link to your email, from which you can change your
         password
       </span>

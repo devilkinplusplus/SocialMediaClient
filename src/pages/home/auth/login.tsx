@@ -61,6 +61,7 @@ function Login() {
       });
   };
 
+  //! Depreceted
   const facebookLoginAsync = async (response) => {
     try {
       setOpen(true);
@@ -148,17 +149,7 @@ function Login() {
             Come in
           </button>
           <GoogleLogin onSuccess={googleLoginAsync} width="384px" />
-          <button
-            type="button"
-            className="bg-blue-600 py-2 px-14 w-full rounded-sm text-white hover:bg-blue-500 duration-300"
-          >
-            <i className="fa-brands fa-facebook mr-2 text-lg"></i>
-            <FacebookProvider appId="304740048631172">
-              <LoginButton scope="email" onSuccess={facebookLoginAsync}>
-                Login via Facebook
-              </LoginButton>
-            </FacebookProvider>
-          </button>
+       
         </div>
       </form>
       <Backdrop

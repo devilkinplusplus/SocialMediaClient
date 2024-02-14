@@ -13,7 +13,7 @@ import { postState } from "../../../common/services/states/postState";
 import { Post } from "../../../common/constants/dtos/post";
 import { User } from "../../../common/constants/dtos/user";
 import { CreatePostResponse } from "../../../common/constants/responseParams/createPostResponse";
-import { stringAvatar } from '../../../common/services/utilities/stringUtilities';
+import { stringAvatar } from "../../../common/services/utilities/stringUtilities";
 
 function PostCreate() {
   const [open, setOpen] = useState(false);
@@ -39,15 +39,18 @@ function PostCreate() {
     const mp4Files = files.filter((file) => file.type === "video/mp4");
 
     if (mp4Files.length > 0 && jpgPngFiles.length > 0) {
-      ToastService.info("You can't select video and image files at the same time",{
-        position:"bottom-center"
-      })
+      ToastService.info(
+        "You can't select video and image files at the same time",
+        {
+          position: "bottom-center",
+        }
+      );
       return;
     } else if (mp4Files.length > 0 && jpgPngFiles.length === 0) {
       if (mp4Files.length > 1) {
-        ToastService.info("You can only select one MP4 file",{
-          position:"bottom-center"
-        })
+        ToastService.info("You can only select one MP4 file", {
+          position: "bottom-center",
+        });
         return;
       }
       setSelectedFiles([...mp4Files]);
@@ -98,6 +101,7 @@ function PostCreate() {
     });
   }, []);
 
+
   return (
     <div className="w-full bg-white p-8 rounded-lg shadow-lg">
       {/* User info */}
@@ -109,7 +113,10 @@ function PostCreate() {
             className="w-10 h-10 rounded-full mr-4 object-cover"
           />
         ) : (
-          <Avatar {...stringAvatar(`${user?.firstName} ${user?.lastName}`)} className="mr-4" />
+          <Avatar
+            {...stringAvatar(`${user?.firstName} ${user?.lastName}`)}
+            className="mr-4"
+          />
         )}
         <div className="flex flex-col justify-start items-baseline">
           <span className="text-gray-700 text-xl">

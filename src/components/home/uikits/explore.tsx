@@ -21,7 +21,6 @@ function Explore() {
     getSuggestedPeople(page, size)
       .then((res: AxiosResponse<SuggestedReponse>) => {
         if (res.data.succeeded) {
-          debugger;
           setCount(res.data.userCount);
           setUsers(res.data.values);
         }
@@ -65,7 +64,7 @@ function Explore() {
       <hr />
       <div className="flex flex-wrap justify-evenly items-center mx-4">
         {users?.map((user, index) => {
-          return <UserCard key={index} user={user} />;
+          return <UserCard key={index} user={user} users={users}/>;
         })}
       </div>
 

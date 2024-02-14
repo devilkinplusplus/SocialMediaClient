@@ -10,7 +10,7 @@ import { Following } from "../../../common/constants/dtos/following";
 import { followingState } from "../../../common/services/states/userState";
 import { useNavigate } from "react-router-dom";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user,users }) => {
   const userId = getUserIdFromToken();
   const [followings, setFollowings] = useRecoilState<Following[]>(followingState);
   const [requested, setRequested] = useState<boolean>(false);
@@ -59,7 +59,7 @@ const UserCard = ({ user }) => {
         ) : (
           <Avatar
             {...stringAvatar(`${user?.firstName} ${user?.lastName}`)}
-            className="w-20 h-20 mr-4"
+            className="mr-4"
             sx={{ width: 96, height: 96 }}
           />
         )}

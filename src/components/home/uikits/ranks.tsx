@@ -13,7 +13,7 @@ function Ranks() {
       </div>
 
       <div className="flex flex-wrap justify-evenly items-center mx-4">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2  md:basis-1/3">
           <div className="flex justify-center items-center m-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-red-700">
               <i className="fas fa-rocket text-5xl text-white"></i>
@@ -44,7 +44,7 @@ function Ranks() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2  md:basis-1/3">
           <div className="flex justify-center items-center m-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-blue-700">
               <i className="fas fa-globe text-5xl text-white"></i>
@@ -76,7 +76,7 @@ function Ranks() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2  md:basis-1/3">
           <div className="flex justify-center items-center m-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-yellow-400">
               <i className="fas fa-star text-5xl text-white"></i>
@@ -108,7 +108,7 @@ function Ranks() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2  md:basis-1/3">
           <div className="flex justify-center items-center m-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-gray-700">
               <i className="fas fa-robot text-5xl text-white"></i>
@@ -140,7 +140,7 @@ function Ranks() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2  md:basis-1/3">
           <div className="flex justify-center items-center m-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-gray-400">
               <i className="fas fa-ghost text-5xl text-white"></i>
@@ -172,7 +172,7 @@ function Ranks() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-72 my-2  md:basis-1/3">
           <div className="flex justify-center items-center m-4">
             <div className="flex items-center justify-center h-24 w-24 rounded-full bg-slate-800">
               <i className="fas fa-skull text-5xl text-white"></i>

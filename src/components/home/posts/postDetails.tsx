@@ -31,7 +31,6 @@ function PostDetails({ post , setPosts }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -45,7 +44,7 @@ function PostDetails({ post , setPosts }) {
     try {
       const res = await toggleLikePost(postId, user[0].id);
       if (res.data.succeeded) {
-        setPosts((prevPosts) =>
+          setPosts((prevPosts) =>
           prevPosts.map((val) =>
             val.id === postId
               ? {
@@ -83,8 +82,13 @@ function PostDetails({ post , setPosts }) {
     );
   };
 
+  const handleShareClick = () => {
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(post.content)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
-    <div className="flex flex-col flex-wrap w-full space-y-4 bg-gray-50 py-4 rounded-lg shadow-lg  px-4">
+    <div className="flex flex-col flex-wrap w-full space-y-5 bg-gray-50 p-4 rounded-lg shadow-lg">
       <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate(`/profile/${post.user?.id}`)}>
         {post.user.profileImage ? (
           <img
@@ -181,7 +185,7 @@ function PostDetails({ post , setPosts }) {
             </div>
           </div>
         </Modal>
-        <button className="flex items-center space-x-1 focus:outline-none">
+        <button className="flex items-center space-x-1 focus:outline-none" onClick={()=>handleShareClick()}>
           <i className="fas fa-share-nodes"></i>
         </button>
         {authenticatedUserId === post.user.id && (

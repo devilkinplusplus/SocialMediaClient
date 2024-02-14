@@ -41,17 +41,18 @@ function Header() {
   }, []);
 
   return (
-    <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 py-4 sticky top-0 z-10">
-      <nav className="container mx-auto flex items-center justify-between">
+    <header className="bg-gradient-to-r from-purple-500 via-purple-400 to-purple-600 
+         p-4 sticky top-0 z-10 w-full">
+      <nav className="flex items-center justify-between sm:p-2">
         <div className="text-white">
           <span
-            className="text-4xl tracking-wider font-bold cursor-pointer"
+            className="text-2xl sm:text-4xl tracking-wider font-bold cursor-pointer"
             onClick={() => navigate("/")}
           >
             Connectify
           </span>
         </div>
-        <ul className="flex space-x-4 text-xl">
+        <ul className="flex space-x-4 text-base sm:text-xl">
           <li>
             <Tooltip title="Home">
               <NavLink
